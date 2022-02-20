@@ -1,19 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
+using Runner.Control;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
-namespace Runner.Control
+namespace Runner.Player
 {
-    public class PlayerController : MonoBehaviour
+    public class PlayerMover : MonoBehaviour
     {
         [Header("Horizontal Movement")]
-        Vector2 movingDirection;
         [SerializeField] float forwardSpeed = 10f;
         [SerializeField] float horizontalSpeed = .5f;
 
         [Header("Vertical Movement")]
-        float jumpEffort;
         [SerializeField] float gravity = -9.8f;
         [SerializeField] float jumpForce = 100;
         [SerializeField] float groundRayDistance = 2f;
@@ -25,21 +21,18 @@ namespace Runner.Control
         CharacterController characterController;
         Animator playerAnimator;
         Vector3 movingVector;
+        InputProvider inputProvider;
 
-        public void OnMove(InputAction.CallbackContext context)
-        {
-            movingDirection = context.ReadValue<Vector2>();
-        }
 
-        public void OnJump(InputAction.CallbackContext context)
-        {
-            jumpEffort = context.ReadValue<float>();
-        }
-
-        void Start()
+        void Awake()
         {
             characterController = GetComponent<CharacterController>();
             playerAnimator = GetComponent<Animator>();
+            inputProvider = GetComponent<InputProvider>();
+        }
+
+        private void Start()
+        {
             totalTime = jumpCurve.keys[jumpCurve.length - 1].time;
         }
 
@@ -61,13 +54,13 @@ namespace Runner.Control
 
         private void Move()
         {
-            movingVector = new Vector3(movingDirection.x * horizontalSpeed, movingVector.y + gravity, forwardSpeed) * Time.deltaTime;
+            movingVector = new Vector3(inputProvider.MovingDirection.x * horizontalSpeed, movingVector.y + gravity, forwardSpeed) * Time.deltaTime;
             characterController.Move(movingVector);
         }
 
         private void Jump()
         {
-            if (jumpEffort == 1 && isAbleToJump)
+            if (inputProvider.JumpEffort == 1 && isAbleToJump)
             {
                 isJumping = true;
                 isAbleToJump = false;

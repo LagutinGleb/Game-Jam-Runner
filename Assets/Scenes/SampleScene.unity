@@ -411,6 +411,23 @@ MonoBehaviour:
   m_CameraActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!1 &1147857534 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1073430745756280452, guid: 5cd8820f545e33e439fe986c33dd3ea1, type: 3}
+  m_PrefabInstance: {fileID: 1241590581}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1147857538
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1147857534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 599c4597ef99f73438191f41518bb6a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1241590581
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -483,9 +500,13 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1846046221851861522, guid: 5cd8820f545e33e439fe986c33dd3ea1, type: 3}
+      propertyPath: m_ActionEvents.Array.data[0].m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1147857538}
+    - target: {fileID: 1846046221851861522, guid: 5cd8820f545e33e439fe986c33dd3ea1, type: 3}
       propertyPath: m_ActionEvents.Array.data[13].m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1733608806}
+      objectReference: {fileID: 1147857538}
     - target: {fileID: 1846046221851861522, guid: 5cd8820f545e33e439fe986c33dd3ea1, type: 3}
       propertyPath: m_ActionEvents.Array.data[13].m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
@@ -495,8 +516,12 @@ PrefabInstance:
       value: OnJump
       objectReference: {fileID: 0}
     - target: {fileID: 1846046221851861522, guid: 5cd8820f545e33e439fe986c33dd3ea1, type: 3}
+      propertyPath: m_ActionEvents.Array.data[0].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Runner.Control.InputProvider, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1846046221851861522, guid: 5cd8820f545e33e439fe986c33dd3ea1, type: 3}
       propertyPath: m_ActionEvents.Array.data[13].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: Runner.Control.PlayerController, Assembly-CSharp
+      value: Runner.Control.InputProvider, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 1846046221851861522, guid: 5cd8820f545e33e439fe986c33dd3ea1, type: 3}
       propertyPath: m_ActionEvents.Array.data[13].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
@@ -647,17 +672,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5120962267131408152, guid: 855a8f79aa356ed47a7352e2a3a59090, type: 3}
   m_PrefabInstance: {fileID: 1423850068}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1733608806 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5260332742669082630, guid: 5cd8820f545e33e439fe986c33dd3ea1, type: 3}
-  m_PrefabInstance: {fileID: 1241590581}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42fa54bfa421ce941b1cb8b7ceed3eba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &2071557454
 PrefabInstance:
   m_ObjectHideFlags: 0

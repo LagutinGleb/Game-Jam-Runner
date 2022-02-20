@@ -169,9 +169,10 @@ GameObject:
   - component: {fileID: 3875331255284731897}
   - component: {fileID: 5260332742669082630}
   - component: {fileID: 1846046221851861522}
+  - component: {fileID: 1147857538}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -201,7 +202,7 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1073430745756280452}
   m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 44ce98856c9ede34381c28070ed455f7, type: 3}
+  m_Avatar: {fileID: 9000000, guid: aea943f924010de478ad5a90abdd5a1a, type: 3}
   m_Controller: {fileID: 9100000, guid: 0a6dc09ee03e8454380c5bdfa744766f, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
@@ -242,13 +243,40 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   forwardSpeed: 10
-  horizontalSpeed: 0.5
+  horizontalSpeed: 10
   gravity: -9.8
-  jumpForce: 100
-  groundRayDistance: 2
+  jumpForce: 18
+  groundRayDistance: 1.2
   jumpCurve:
     serializedVersion: 2
-    m_Curve: []
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 19.658688
+      outSlope: 19.658688
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.050842285
+      value: 0.99949265
+      inSlope: 0.09455018
+      outSlope: 0.09455018
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.066448286
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -1.0530312
+      outSlope: -1.0530312
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
@@ -279,8 +307,8 @@ MonoBehaviour:
   m_ActionEvents:
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5260332742669082630}
-        m_TargetAssemblyTypeName: Runner.Control.PlayerController, Assembly-CSharp
+      - m_Target: {fileID: 1147857538}
+        m_TargetAssemblyTypeName: Runner.Control.InputProvider, Assembly-CSharp
         m_MethodName: OnMove
         m_Mode: 0
         m_Arguments:
@@ -342,7 +370,19 @@ MonoBehaviour:
     m_ActionId: 3d63676b-a054-4b2b-b8ab-7cdcd6834394
     m_ActionName: UI/TrackedDeviceOrientation
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1147857538}
+        m_TargetAssemblyTypeName: Runner.Control.InputProvider, Assembly-CSharp
+        m_MethodName: OnJump
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: b4a82338-337d-477b-9fb8-2155e8cbf463
     m_ActionName: Player/Jump[/Keyboard/space]
   m_NeverAutoSwitchControlSchemes: 0
@@ -350,6 +390,18 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &1147857538
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1073430745756280452}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 599c4597ef99f73438191f41518bb6a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1202899828933618744
 GameObject:
   m_ObjectHideFlags: 0
