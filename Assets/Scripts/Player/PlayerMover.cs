@@ -19,7 +19,7 @@ namespace Runner.Player
         bool isJumping;
 
         CharacterController characterController;
-        Animator playerAnimator;
+        PlayerAnimatorUpdater animatorUpdater;
         Vector3 movingVector;
         InputProvider inputProvider;
 
@@ -27,7 +27,7 @@ namespace Runner.Player
         void Awake()
         {
             characterController = GetComponent<CharacterController>();
-            playerAnimator = GetComponent<Animator>();
+            animatorUpdater = GetComponent<PlayerAnimatorUpdater>();
             inputProvider = GetComponent<InputProvider>();
         }
 
@@ -64,7 +64,7 @@ namespace Runner.Player
             {
                 isJumping = true;
                 isAbleToJump = false;
-                playerAnimator.SetBool("Jump", true);
+                animatorUpdater.OnStartJumping();
             }
 
             if (isJumping)
@@ -83,13 +83,12 @@ namespace Runner.Player
             if (Physics.Raycast(ray, out hit, groundRayDistance))
             {
                 isAbleToJump = true;
-                playerAnimator.SetBool("Land", true);
-                playerAnimator.SetBool("Jump", false);
+                animatorUpdater.OnLanding();
             }
             else
             {
                 isAbleToJump = false;
-                playerAnimator.SetBool("Land", false);
+                animatorUpdater.Falling();
             }
 
             Debug.DrawLine(rayOrigin, rayOrigin + Vector3.down * groundRayDistance, Color.red);
