@@ -60,7 +60,7 @@ namespace Runner.Player
 
         private void Jump()
         {
-            if (inputProvider.JumpEffort == 1 && isAbleToJump)
+            if (inputProvider.JumpStarted && isAbleToJump)
             {
                 isJumping = true;
                 isAbleToJump = false;

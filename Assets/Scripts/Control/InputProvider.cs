@@ -8,7 +8,7 @@ namespace Runner.Control
     public class InputProvider : MonoBehaviour
     {
         public Vector2 MovingDirection { get; private set; }
-        public float JumpEffort { get; private set; }
+        public bool JumpStarted { get; private set; }
 
         public void OnMove(InputAction.CallbackContext context)
         {
@@ -17,7 +17,7 @@ namespace Runner.Control
 
         public void OnJump(InputAction.CallbackContext context)
         {
-            JumpEffort = context.ReadValue<float>();
+            JumpStarted = context.ReadValueAsButton();
         }
 
     }
