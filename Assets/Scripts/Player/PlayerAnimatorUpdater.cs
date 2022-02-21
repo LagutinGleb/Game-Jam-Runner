@@ -26,5 +26,14 @@ namespace Runner.Player
             playerAnimator.SetBool("Land", true);
             playerAnimator.SetBool("Jump", false);
         }
+
+        public void OnStartSliding()
+        {
+            playerAnimator.SetBool("Slide", true);
+        }
+        public void OnEndSliding()
+        {
+            playerAnimator.SetBool("Slide", false);
+        }
     }
 }

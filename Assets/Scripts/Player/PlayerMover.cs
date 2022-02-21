@@ -5,24 +5,33 @@ namespace Runner.Player
 {
     public class PlayerMover : MonoBehaviour
     {
-        [Header("Horizontal Movement")]
+        [Header("Running")]
         [SerializeField] float forwardSpeed = 10f;
         [SerializeField] float horizontalSpeed = .5f;
 
-        [Header("Vertical Movement")]
+        [Header("Jumping")]
         [SerializeField] float gravity = -9.8f;
         [SerializeField] float jumpForce = 100;
         [SerializeField] float groundRayDistance = 2f;
         [SerializeField] AnimationCurve jumpCurve;
-        float currentTime, totalTime;
+        float jumpCurrentTime, jumpTotalTime;
         bool isAbleToJump = true;
         bool isJumping;
+
+        [Header("Sliding")]
+        [SerializeField] AnimationCurve slideCurve;
+        float slideSpeedMultiplier = 1;
+        float slideCurrentTime, slideTotalTime;
+        bool isAbleToSlide = true;
+        bool isSliding;
+
 
         CharacterController characterController;
         PlayerAnimatorUpdater animatorUpdater;
         Vector3 movingVector;
         InputProvider inputProvider;
 
+        delegate void OnProcessStarted();
 
         void Awake()
         {
@@ -33,7 +42,8 @@ namespace Runner.Player
 
         private void Start()
         {
-            totalTime = jumpCurve.keys[jumpCurve.length - 1].time;
+            jumpTotalTime = jumpCurve.keys[jumpCurve.length - 1].time;
+            slideTotalTime = slideCurve.keys[slideCurve.length - 1].time;
         }
 
         void Update()
@@ -41,25 +51,31 @@ namespace Runner.Player
             Move();
             HitTheFloor();
             Jump();
-            UpdateCurveTime();
+            Slide();
         }
-        private void UpdateCurveTime()
+
+        private void UpdateCurveTime(ref float currentTime, ref float totalTime, ref bool isProcessing)
         {
             if (currentTime >= totalTime)
             {
                 currentTime = 0;
-                isJumping = false;
+                isProcessing = false;
             }
         }
 
         private void Move()
         {
-            movingVector = new Vector3(inputProvider.MovingDirection.x * horizontalSpeed, movingVector.y + gravity, forwardSpeed) * Time.deltaTime;
+            movingVector = new Vector3(inputProvider.MovingDirection.x * horizontalSpeed, 
+                movingVector.y + gravity, 
+                forwardSpeed * slideSpeedMultiplier) * Time.deltaTime;
+
             characterController.Move(movingVector);
         }
 
         private void Jump()
         {
+            UpdateCurveTime(ref jumpCurrentTime, ref jumpTotalTime, ref isJumping);
+
             if (inputProvider.JumpStarted && isAbleToJump)
             {
                 isJumping = true;
@@ -69,8 +85,31 @@ namespace Runner.Player
 
             if (isJumping)
             {
-                currentTime += Time.deltaTime;
-                movingVector.y = jumpForce * jumpCurve.Evaluate(currentTime);
+                jumpCurrentTime += Time.deltaTime;
+                movingVector.y = jumpForce * jumpCurve.Evaluate(jumpCurrentTime);
+            }
+        }
+
+        private void Slide()
+        {
+            UpdateCurveTime(ref slideCurrentTime, ref slideTotalTime, ref isSliding);
+
+            if (isAbleToSlide && inputProvider.SlideStarted)
+            {
+                isSliding = true;
+                isAbleToSlide = false;
+                animatorUpdater.OnStartSliding();
+            }
+
+            if (isSliding)
+            {
+                slideCurrentTime += Time.deltaTime;
+                slideSpeedMultiplier = slideCurve.Evaluate(slideCurrentTime);
+                movingVector.y = -jumpForce * slideCurve.Evaluate(jumpCurrentTime);
+            }
+            else
+            {
+                animatorUpdater.OnEndSliding();
             }
         }
 
@@ -80,9 +119,11 @@ namespace Runner.Player
 
             Ray ray = new Ray(rayOrigin, Vector3.down);
             RaycastHit hit;
+
             if (Physics.Raycast(ray, out hit, groundRayDistance))
             {
                 isAbleToJump = true;
+                isAbleToSlide = true;
                 animatorUpdater.OnLanding();
             }
             else
@@ -93,5 +134,6 @@ namespace Runner.Player
 
             Debug.DrawLine(rayOrigin, rayOrigin + Vector3.down * groundRayDistance, Color.red);
         }
+
     }
 }
