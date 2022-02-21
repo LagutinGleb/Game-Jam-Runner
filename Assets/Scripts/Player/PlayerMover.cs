@@ -1,4 +1,5 @@
 using Runner.Control;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Runner.Player
@@ -33,12 +34,20 @@ namespace Runner.Player
         InputProvider inputProvider;
 
         public MovingDirection movingDirection = MovingDirection.Forward;
+        Dictionary<MovingDirection, Vector3> directions = new Dictionary<MovingDirection, Vector3>();
+        [SerializeField] float turnSpeed = 50f;
+        public float turnFraction = 0;
 
         void Awake()
         {
             characterController = GetComponent<CharacterController>();
             animatorUpdater = GetComponent<PlayerAnimatorUpdater>();
             inputProvider = GetComponent<InputProvider>();
+
+            directions[MovingDirection.Forward] = new Vector3 (0, 0, 0);
+            directions[MovingDirection.Back] = new Vector3 (0, 180f, 0);
+            directions[MovingDirection.Left] = new Vector3 (0, -90f, 0);
+            directions[MovingDirection.Right] = new Vector3 (0, 90f, 0);
         }
 
         private void Start()
@@ -69,38 +78,29 @@ namespace Runner.Player
         //Calculate result moving vector including jumping and sliding
         private void Move()
         {
-            switch (movingDirection)
-            { 
-                case MovingDirection.Forward:
-                    movingVector = new Vector3(inputProvider.MovingDirection.x * horizontalSpeed,
-                    movingVector.y + gravity,
-                    forwardSpeed * slideSpeedMultiplier) * Time.deltaTime;
-                    transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
-                    break;
+            Turn(movingDirection);
 
-                case MovingDirection.Back:
-                    movingVector = new Vector3(inputProvider.MovingDirection.x * horizontalSpeed,
-                    movingVector.y + gravity,
-                    -forwardSpeed * slideSpeedMultiplier) * Time.deltaTime;
-                    transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
-                    break;
+            Vector3 forward = transform.forward * forwardSpeed;
+            Vector3 strafe = transform.right * inputProvider.MovingDirection.x * horizontalSpeed;
+            Vector3 vertical = transform.up * (movingVector.y + gravity);
 
-                case MovingDirection.Right:
-                    movingVector = new Vector3(forwardSpeed * slideSpeedMultiplier,
-                    movingVector.y + gravity,
-                    inputProvider.MovingDirection.x * horizontalSpeed) * Time.deltaTime;
-                    transform.rotation = Quaternion.Euler(new Vector3(0, 90, 0));
-                    break;
-
-                case MovingDirection.Left:
-                    movingVector = new Vector3(-forwardSpeed * slideSpeedMultiplier,
-                    movingVector.y + gravity,
-                    inputProvider.MovingDirection.x * horizontalSpeed) * Time.deltaTime;
-                    transform.rotation = Quaternion.Euler(new Vector3(0, -90, 0));
-                    break;
-            }
-
+            movingVector = (forward + strafe + vertical) * Time.deltaTime;
             characterController.Move(movingVector);
+        }
+
+        public void StartTurning(MovingDirection triggerDirection)
+        {
+            turnFraction = 0;
+            movingDirection = triggerDirection;
+        }
+
+        void Turn(MovingDirection movingDirection)
+        {
+            turnFraction = Mathf.MoveTowards(turnFraction, 1, turnSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(directions[movingDirection]), turnFraction);
+
+            //Vector3 targetRotation = Vector3.MoveTowards(transform.rotation.eulerAngles, directions[movingDirection], turnSpeed * Time.deltaTime);
+            //transform.rotation = Quaternion.Euler(targetRotation);
         }
 
         private void Jump()
