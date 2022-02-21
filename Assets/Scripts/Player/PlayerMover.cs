@@ -5,6 +5,8 @@ namespace Runner.Player
 {
     public class PlayerMover : MonoBehaviour
     {
+        Vector3 movingVector;
+
         [Header("Running")]
         [SerializeField] float forwardSpeed = 10f;
         [SerializeField] float horizontalSpeed = .5f;
@@ -15,7 +17,6 @@ namespace Runner.Player
         [SerializeField] float groundRayDistance = 2f;
         [SerializeField] AnimationCurve jumpCurve;
         float jumpCurrentTime, jumpTotalTime;
-        bool isAbleToJump = true;
         bool isJumping;
 
         [Header("Sliding")]
@@ -23,18 +24,13 @@ namespace Runner.Player
         [SerializeField] float downForce = 10f;
         float slideSpeedMultiplier = 1;
         float slideCurrentTime, slideTotalTime;
-        bool isAbleToSlide = true;
         bool isSliding;
 
+        bool isOnGround = true;
 
         CharacterController characterController;
         PlayerAnimatorUpdater animatorUpdater;
-        Vector3 movingVector;
         InputProvider inputProvider;
-
-        public bool isOnGround;
-
-        delegate void OnProcessStarted();
 
         void Awake()
         {
@@ -52,11 +48,13 @@ namespace Runner.Player
         void Update()
         {
             Move();
-            HitTheFloor();
+            RaycastFloor();
+
             Jump();
             Slide();
         }
 
+        //Update Animation curves for Jumping and Sliding processes
         private void UpdateCurveTime(ref float currentTime, ref float totalTime, ref bool isProcessing)
         {
             if (currentTime >= totalTime)
@@ -66,6 +64,7 @@ namespace Runner.Player
             }
         }
 
+        //Calculate result moving vector including jumping and sliding
         private void Move()
         {
             movingVector = new Vector3(inputProvider.MovingDirection.x * horizontalSpeed, 
@@ -79,10 +78,10 @@ namespace Runner.Player
         {
             UpdateCurveTime(ref jumpCurrentTime, ref jumpTotalTime, ref isJumping);
 
-            if (inputProvider.JumpStarted && isAbleToJump)
+            if (inputProvider.JumpStarted && isOnGround && !isJumping)
             {
                 isJumping = true;
-                isAbleToJump = false;
+                isOnGround = false;
                 animatorUpdater.OnStartJumping();
             }
 
@@ -97,10 +96,9 @@ namespace Runner.Player
         {
             UpdateCurveTime(ref slideCurrentTime, ref slideTotalTime, ref isSliding);
 
-            if (isAbleToSlide && inputProvider.SlideStarted)
+            if (inputProvider.SlideStarted)
             {
                 isSliding = true;
-                isAbleToSlide = false;
             }
 
             if (isSliding)
@@ -118,7 +116,7 @@ namespace Runner.Player
             }
         }
 
-        void HitTheFloor()
+        void RaycastFloor()
         {
             Vector3 rayOrigin = transform.position + Vector3.up * groundRayDistance / 2;
 
@@ -127,25 +125,20 @@ namespace Runner.Player
 
             if (Physics.Raycast(ray, out hit, groundRayDistance))
             {
-                isAbleToJump = true;
-                isAbleToSlide = true;
+                isOnGround = true;
 
                 if(isSliding)
                     animatorUpdater.OnStartSliding();
                 else
                     animatorUpdater.OnLanding();
-
-                isOnGround = true;
             }
             else
             {
-                isAbleToJump = false;
-                animatorUpdater.Falling();
                 isOnGround = false;
+                animatorUpdater.Falling();
             }
 
             Debug.DrawLine(rayOrigin, rayOrigin + Vector3.down * groundRayDistance, Color.red);
         }
-
     }
 }
