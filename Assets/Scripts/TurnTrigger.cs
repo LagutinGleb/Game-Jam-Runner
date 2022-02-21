@@ -6,11 +6,10 @@ namespace Assets.Scripts
 {
     public class TurnTrigger : MonoBehaviour
     {
-        [SerializeField] MovingDirection triggerDirection;
         private void OnTriggerEnter(Collider other)
         {
             if (!other.CompareTag("Player")) return;
-            other.GetComponent<PlayerMover>().StartTurning(triggerDirection);
+            other.GetComponent<PlayerMover>().StartTurning(transform.parent.rotation);
         }
     }
 }

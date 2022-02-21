@@ -33,21 +33,16 @@ namespace Runner.Player
         PlayerAnimatorUpdater animatorUpdater;
         InputProvider inputProvider;
 
-        public MovingDirection movingDirection = MovingDirection.Forward;
-        Dictionary<MovingDirection, Vector3> directions = new Dictionary<MovingDirection, Vector3>();
         [SerializeField] float turnSpeed = 50f;
         public float turnFraction = 0;
+        Quaternion targetRotation;
 
         void Awake()
         {
             characterController = GetComponent<CharacterController>();
             animatorUpdater = GetComponent<PlayerAnimatorUpdater>();
             inputProvider = GetComponent<InputProvider>();
-
-            directions[MovingDirection.Forward] = new Vector3 (0, 0, 0);
-            directions[MovingDirection.Back] = new Vector3 (0, 180f, 0);
-            directions[MovingDirection.Left] = new Vector3 (0, -90f, 0);
-            directions[MovingDirection.Right] = new Vector3 (0, 90f, 0);
+            targetRotation = transform.rotation;
         }
 
         private void Start()
@@ -78,7 +73,7 @@ namespace Runner.Player
         //Calculate result moving vector including jumping and sliding
         private void Move()
         {
-            Turn(movingDirection);
+            Turn();
 
             Vector3 forward = transform.forward * forwardSpeed;
             Vector3 strafe = transform.right * inputProvider.MovingDirection.x * horizontalSpeed;
@@ -88,19 +83,17 @@ namespace Runner.Player
             characterController.Move(movingVector);
         }
 
-        public void StartTurning(MovingDirection triggerDirection)
+        public void StartTurning(Quaternion triggetRotation)
         {
             turnFraction = 0;
-            movingDirection = triggerDirection;
+            targetRotation = triggetRotation;
         }
 
-        void Turn(MovingDirection movingDirection)
+        void Turn()
         {
+            if (turnFraction >= 1) return;
             turnFraction = Mathf.MoveTowards(turnFraction, 1, turnSpeed * Time.deltaTime);
-            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(directions[movingDirection]), turnFraction);
-
-            //Vector3 targetRotation = Vector3.MoveTowards(transform.rotation.eulerAngles, directions[movingDirection], turnSpeed * Time.deltaTime);
-            //transform.rotation = Quaternion.Euler(targetRotation);
+            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, turnFraction);
         }
 
         private void Jump()
