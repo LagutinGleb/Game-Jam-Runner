@@ -371,7 +371,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   m_LocalRotation: {x: 0.12556824, y: 0.0000000019757707, z: -2.500735e-10, w: 0.992085}
-  m_LocalPosition: {x: -0.000000038574626, y: 2.4914873, z: -4.1246524}
+  m_LocalPosition: {x: -0.0000009922489, y: 2.4914873, z: -4.1246524}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -580,7 +580,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5260332742669082630, guid: 5cd8820f545e33e439fe986c33dd3ea1, type: 3}
       propertyPath: slideCurve.m_Curve.Array.data[1].time
-      value: 0.5
+      value: 0.3940735
       objectReference: {fileID: 0}
     - target: {fileID: 5260332742669082630, guid: 5cd8820f545e33e439fe986c33dd3ea1, type: 3}
       propertyPath: slideCurve.m_Curve.Array.data[2].time
@@ -592,7 +592,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5260332742669082630, guid: 5cd8820f545e33e439fe986c33dd3ea1, type: 3}
       propertyPath: slideCurve.m_Curve.Array.data[1].value
-      value: 2
+      value: 2.0025368
       objectReference: {fileID: 0}
     - target: {fileID: 5260332742669082630, guid: 5cd8820f545e33e439fe986c33dd3ea1, type: 3}
       propertyPath: slideCurve.m_Curve.Array.data[2].value
@@ -600,19 +600,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5260332742669082630, guid: 5cd8820f545e33e439fe986c33dd3ea1, type: 3}
       propertyPath: slideCurve.m_Curve.Array.data[0].inSlope
-      value: 2
+      value: 2.5440352
       objectReference: {fileID: 0}
     - target: {fileID: 5260332742669082630, guid: 5cd8820f545e33e439fe986c33dd3ea1, type: 3}
       propertyPath: slideCurve.m_Curve.Array.data[1].inSlope
-      value: 0
+      value: 0.44474173
       objectReference: {fileID: 0}
     - target: {fileID: 5260332742669082630, guid: 5cd8820f545e33e439fe986c33dd3ea1, type: 3}
       propertyPath: slideCurve.m_Curve.Array.data[2].inSlope
-      value: -2
+      value: -1.6545517
       objectReference: {fileID: 0}
     - target: {fileID: 5260332742669082630, guid: 5cd8820f545e33e439fe986c33dd3ea1, type: 3}
       propertyPath: slideCurve.m_Curve.Array.data[0].outSlope
-      value: 2
+      value: 2.5440352
       objectReference: {fileID: 0}
     - target: {fileID: 5260332742669082630, guid: 5cd8820f545e33e439fe986c33dd3ea1, type: 3}
       propertyPath: slideCurve.m_Curve.Array.data[1].inWeight
@@ -620,7 +620,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5260332742669082630, guid: 5cd8820f545e33e439fe986c33dd3ea1, type: 3}
       propertyPath: slideCurve.m_Curve.Array.data[1].outSlope
-      value: 0
+      value: 0.44474173
       objectReference: {fileID: 0}
     - target: {fileID: 5260332742669082630, guid: 5cd8820f545e33e439fe986c33dd3ea1, type: 3}
       propertyPath: slideCurve.m_Curve.Array.data[2].inWeight
@@ -628,7 +628,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5260332742669082630, guid: 5cd8820f545e33e439fe986c33dd3ea1, type: 3}
       propertyPath: slideCurve.m_Curve.Array.data[2].outSlope
-      value: -2
+      value: -1.6545517
       objectReference: {fileID: 0}
     - target: {fileID: 5260332742669082630, guid: 5cd8820f545e33e439fe986c33dd3ea1, type: 3}
       propertyPath: slideCurve.m_Curve.Array.data[0].outWeight
@@ -732,7 +732,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7751608694362841448, guid: 863de675febacb24c869741fb79f72ea, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.000000038574626
+      value: -0.0000009922489
       objectReference: {fileID: 0}
     - target: {fileID: 7751608694362841448, guid: 863de675febacb24c869741fb79f72ea, type: 3}
       propertyPath: m_LocalPosition.y

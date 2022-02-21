@@ -20,6 +20,7 @@ namespace Runner.Player
 
         [Header("Sliding")]
         [SerializeField] AnimationCurve slideCurve;
+        [SerializeField] float downForce = 10f;
         float slideSpeedMultiplier = 1;
         float slideCurrentTime, slideTotalTime;
         bool isAbleToSlide = true;
@@ -30,6 +31,8 @@ namespace Runner.Player
         PlayerAnimatorUpdater animatorUpdater;
         Vector3 movingVector;
         InputProvider inputProvider;
+
+        public bool isOnGround;
 
         delegate void OnProcessStarted();
 
@@ -98,14 +101,16 @@ namespace Runner.Player
             {
                 isSliding = true;
                 isAbleToSlide = false;
-                animatorUpdater.OnStartSliding();
             }
 
             if (isSliding)
             {
-                slideCurrentTime += Time.deltaTime;
-                slideSpeedMultiplier = slideCurve.Evaluate(slideCurrentTime);
-                movingVector.y = -jumpForce * slideCurve.Evaluate(jumpCurrentTime);
+                movingVector.y = -downForce * slideCurve.Evaluate(jumpCurrentTime);
+                if (isOnGround)
+                {
+                    slideCurrentTime += Time.deltaTime;
+                    slideSpeedMultiplier = slideCurve.Evaluate(slideCurrentTime);
+                }
             }
             else
             {
@@ -124,12 +129,19 @@ namespace Runner.Player
             {
                 isAbleToJump = true;
                 isAbleToSlide = true;
-                animatorUpdater.OnLanding();
+
+                if(isSliding)
+                    animatorUpdater.OnStartSliding();
+                else
+                    animatorUpdater.OnLanding();
+
+                isOnGround = true;
             }
             else
             {
                 isAbleToJump = false;
                 animatorUpdater.Falling();
+                isOnGround = false;
             }
 
             Debug.DrawLine(rayOrigin, rayOrigin + Vector3.down * groundRayDistance, Color.red);
