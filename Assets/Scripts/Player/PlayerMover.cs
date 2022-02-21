@@ -32,6 +32,8 @@ namespace Runner.Player
         PlayerAnimatorUpdater animatorUpdater;
         InputProvider inputProvider;
 
+        public MovingDirection movingDirection = MovingDirection.Forward;
+
         void Awake()
         {
             characterController = GetComponent<CharacterController>();
@@ -67,9 +69,36 @@ namespace Runner.Player
         //Calculate result moving vector including jumping and sliding
         private void Move()
         {
-            movingVector = new Vector3(inputProvider.MovingDirection.x * horizontalSpeed, 
-                movingVector.y + gravity, 
-                forwardSpeed * slideSpeedMultiplier) * Time.deltaTime;
+            switch (movingDirection)
+            { 
+                case MovingDirection.Forward:
+                    movingVector = new Vector3(inputProvider.MovingDirection.x * horizontalSpeed,
+                    movingVector.y + gravity,
+                    forwardSpeed * slideSpeedMultiplier) * Time.deltaTime;
+                    transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+                    break;
+
+                case MovingDirection.Back:
+                    movingVector = new Vector3(inputProvider.MovingDirection.x * horizontalSpeed,
+                    movingVector.y + gravity,
+                    -forwardSpeed * slideSpeedMultiplier) * Time.deltaTime;
+                    transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
+                    break;
+
+                case MovingDirection.Right:
+                    movingVector = new Vector3(forwardSpeed * slideSpeedMultiplier,
+                    movingVector.y + gravity,
+                    inputProvider.MovingDirection.x * horizontalSpeed) * Time.deltaTime;
+                    transform.rotation = Quaternion.Euler(new Vector3(0, 90, 0));
+                    break;
+
+                case MovingDirection.Left:
+                    movingVector = new Vector3(-forwardSpeed * slideSpeedMultiplier,
+                    movingVector.y + gravity,
+                    inputProvider.MovingDirection.x * horizontalSpeed) * Time.deltaTime;
+                    transform.rotation = Quaternion.Euler(new Vector3(0, -90, 0));
+                    break;
+            }
 
             characterController.Move(movingVector);
         }
