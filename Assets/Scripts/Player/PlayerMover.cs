@@ -12,6 +12,11 @@ namespace Runner.Player
         [SerializeField] float forwardSpeed = 10f;
         [SerializeField] float horizontalSpeed = .5f;
 
+        [Header("Turning")]
+        [SerializeField] float turnSpeed = 50f;
+        float turnFraction = 0;
+        Quaternion targetRotation;
+
         [Header("Jumping")]
         [SerializeField] float gravity = -9.8f;
         [SerializeField] float jumpForce = 100;
@@ -32,10 +37,6 @@ namespace Runner.Player
         CharacterController characterController;
         PlayerAnimatorUpdater animatorUpdater;
         InputProvider inputProvider;
-
-        [SerializeField] float turnSpeed = 50f;
-        public float turnFraction = 0;
-        Quaternion targetRotation;
 
         void Awake()
         {
