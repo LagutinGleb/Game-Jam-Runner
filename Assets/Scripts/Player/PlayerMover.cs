@@ -1,4 +1,5 @@
 using Runner.Control;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Runner.Player
@@ -10,6 +11,11 @@ namespace Runner.Player
         [Header("Running")]
         [SerializeField] float forwardSpeed = 10f;
         [SerializeField] float horizontalSpeed = .5f;
+
+        [Header("Turning")]
+        [SerializeField] float turnSpeed = 50f;
+        float turnFraction = 0;
+        Quaternion targetRotation;
 
         [Header("Jumping")]
         [SerializeField] float gravity = -9.8f;
@@ -37,6 +43,7 @@ namespace Runner.Player
             characterController = GetComponent<CharacterController>();
             animatorUpdater = GetComponent<PlayerAnimatorUpdater>();
             inputProvider = GetComponent<InputProvider>();
+            targetRotation = transform.rotation;
         }
 
         private void Start()
@@ -67,11 +74,27 @@ namespace Runner.Player
         //Calculate result moving vector including jumping and sliding
         private void Move()
         {
-            movingVector = new Vector3(inputProvider.MovingDirection.x * horizontalSpeed, 
-                movingVector.y + gravity, 
-                forwardSpeed * slideSpeedMultiplier) * Time.deltaTime;
+            Turn();
 
+            Vector3 forward = transform.forward * forwardSpeed;
+            Vector3 strafe = transform.right * inputProvider.MovingDirection.x * horizontalSpeed;
+            Vector3 vertical = transform.up * (movingVector.y + gravity);
+
+            movingVector = (forward + strafe + vertical) * Time.deltaTime;
             characterController.Move(movingVector);
+        }
+
+        public void StartTurning(Quaternion triggetRotation)
+        {
+            turnFraction = 0;
+            targetRotation = triggetRotation;
+        }
+
+        void Turn()
+        {
+            if (turnFraction >= 1) return;
+            turnFraction = Mathf.MoveTowards(turnFraction, 1, turnSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, turnFraction);
         }
 
         private void Jump()
